@@ -24,9 +24,10 @@ __pycache__/
 # =========================
 # Secrets (CRÍTICO)
 # =========================
-secrets/
 secrets/*
 !secrets/.gitkeep
+!secrets/*.example.txt
+!secrets/README.md
 
 # Alternative explicit safety (extra strict)
 **/db_password.txt

@@ -8,7 +8,8 @@ services:
     restart: unless-stopped
 
     depends_on:
-      - app
+      app:
+        condition: service_healthy
 
     ports:
       - "80:80"
@@ -25,7 +26,8 @@ services:
     container_name: app
 
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
     environment:
       DB_HOST: db
@@ -39,6 +41,13 @@ services:
 
     secrets:
       - db_password
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status == 200 else 1)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
 
     networks:
       - frontend
@@ -64,6 +73,13 @@ services:
       - db_password
       - db_root_password
 
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$(cat /run/secrets/db_root_password)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
     networks:
       - backend
 
@@ -78,9 +94,6 @@ secrets:
 
   db_root_password:
     file: ./secrets/db_root_password.txt
-# NOTE: these point at the real, gitignored files (created from the
-# .example.txt templates in secrets/ — see secrets/README.md). They are not
-# present in this repo snapshot; copy the examples locally before `up`.
 
 
 networks:
