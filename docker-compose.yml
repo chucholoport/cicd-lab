@@ -83,9 +83,38 @@ services:
     networks:
       - backend
 
+  jenkins:
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile
+
+    container_name: jenkins
+    restart: unless-stopped
+
+    user: "jenkins"
+
+    group_add:
+      - "${DOCKER_GID}"
+
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+
+    networks:
+      - frontend
+      - backend
+
 
 volumes:
   db_data:
+  jenkins_home:
 
 
 secrets:

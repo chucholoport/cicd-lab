@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "3dmak-lab-app"
+        IMAGE_TAG = "build-${BUILD_NUMBER}"
+        REGISTRY = "docker.io/your-user"
+    }
+
+    stages {
+
+        stage('Build') {
+            steps {
+                echo "Building Docker image..."
+                sh """
+                docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f app/Dockerfile .
+                """
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running pytest inside container..."
+                sh """
+                docker run --rm \
+                    --network 3dmak-lab_backend \
+                    ${IMAGE_NAME}:${IMAGE_TAG} \
+                    pytest tests -v
+                """
+            }
+        }
+
+        stage('Push') {
+            steps {
+                echo "PUSH STAGE (dummy - not executed)"
+                echo "Would execute:"
+                echo "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                echo "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploy to STAGING (placeholder)"
+                echo "ssh deploy@staging 'docker pull ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}'"
+                echo "ssh deploy@staging 'docker run -d ${IMAGE_NAME}:${IMAGE_TAG}'"
+            }
+        }
+
+        stage('Approval for Production') {
+            steps {
+                input message: "Approve deployment to PRODUCTION?"
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo "Deploy to PRODUCTION (placeholder)"
+                echo "ssh deploy@prod 'docker pull ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}'"
+                echo "ssh deploy@prod 'docker run -d ${IMAGE_NAME}:${IMAGE_TAG}'"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline finished"
+        }
+    }
+}
