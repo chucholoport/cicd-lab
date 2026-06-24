@@ -10,6 +10,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy application virtual hosts
 COPY conf.d/ /etc/nginx/conf.d/
 
+# Copy application frontend
+COPY html/ /usr/share/nginx/html/
+
 # Expose HTTP port
 EXPOSE 80
 

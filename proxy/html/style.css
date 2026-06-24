@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+pre {
+    text-align: left;
+    background: #0b1220;
+    padding: 15px;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+}
