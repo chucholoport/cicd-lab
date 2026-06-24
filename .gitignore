@@ -1,0 +1,44 @@
+# =========================
+# OS / editor noise
+# =========================
+.DS_Store
+*.swp
+*.swo
+*~
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+
+# =========================
+# Docker
+# =========================
+**/docker.sock
+
+# =========================
+# Secrets (CRÍTICO)
+# =========================
+secrets/
+secrets/*
+!secrets/.gitkeep
+
+# Alternative explicit safety (extra strict)
+**/db_password.txt
+**/db_root_password.txt
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
